@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,6 +24,8 @@ Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
+	Route::post('cards','App\Http\Controllers\CardsController@store');
+	Route::get('indexCards','App\Http\Controllers\CardsController@index');
     Route::post('user','App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::get('logout','App\Http\Controllers\UserController@logout');
 
