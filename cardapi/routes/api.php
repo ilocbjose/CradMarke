@@ -24,8 +24,15 @@ Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
+	Route::post('collection','App\Http\Controllers\CardsController@storeCollection');
+	Route::get('indexCollection','App\Http\Controllers\CardsController@indexCollection');
+
+	Route::post('sells','App\Http\Controllers\CardsController@storeSells');
+	Route::get('indexSells','App\Http\Controllers\CardsController@indexSells');
+
 	Route::post('cards','App\Http\Controllers\CardsController@store');
 	Route::get('indexCards','App\Http\Controllers\CardsController@index');
+
     Route::post('user','App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::get('logout','App\Http\Controllers\UserController@logout');
 
