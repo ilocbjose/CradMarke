@@ -10,4 +10,10 @@ class Cards extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description', 'id_collection'];
+
+    public function collection(){
+
+    	return $this->belongsTo('App\Collection');
+
+    }
 }
