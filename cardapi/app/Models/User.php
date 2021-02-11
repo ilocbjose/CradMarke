@@ -7,41 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Role;
 
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
-
-    public function authorizeRoles($roles)
-    {
-        abort_unless($this->hasAnyRole($roles), 401);
-        return true;
-    }
-    public function hasAnyRole($roles)
-    {
-        if (is_array($roles)) {
-            foreach ($roles as $role) {
-                if ($this->hasRole($role)) {
-                    return true;
-                }
-            }
-        } else {
-            if ($this->hasRole($roles)) {
-                return true; 
-            }   
-        }
-
-        return false;
-    }
-    public function hasRole($role)
-    {
-        if ($this->roles()->where('name', $role)->first()) {
-            return true;
-        }
-        
-        return false;
-    }
 
     /**
      * The attributes that are mass assignable.
@@ -52,6 +21,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**

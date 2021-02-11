@@ -33,7 +33,7 @@ class CardsController extends Controller
 
             $cards->save();
 
-             $this->msg = 'Carta registrada';
+            $this->msg = 'Carta registrada';
 
 
 
@@ -51,20 +51,19 @@ class CardsController extends Controller
 
         $msg = null;
 
+        $collection = new Collection;
 
-            $collection = new Collection;
+        $collection->name = $request->name;
 
-            $collection->name = $request->name;
+        $collection->photo = $request->photo;
 
-            $collection->photo = $request->photo;
+        $collection->date = $request->date;
 
-            $collection->date = $request->date;
+        $collection->save();
 
-            $collection->save();
 
-            $this->msg = 'Colección guardada';
+        $this->msg = 'Colección guardada';
         
-
         return $this->msg;
     }
 
