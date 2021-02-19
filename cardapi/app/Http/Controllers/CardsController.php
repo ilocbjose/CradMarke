@@ -34,16 +34,22 @@ class CardsController extends Controller
 
                 $this->respuesta = $card;
 
+                Log::info('Codigo 200, peticion aceptada');
+                Log::debug($id);
+
             }else{
 
                 $this->respuesta = "No existe ninguna carta asociado a los datos proporcionados";
+                Log::info('No existe dicha carta');
+                Log::debug($id);
 
             }
 
         } else {
 
             $this->respuesta = "Datos introducidos no validos";
-            Log::info('Datos introducidos erroneos (Busqueda por nombre)');
+            Log::info('Datos introducidos erroneos');
+            Log::debug($id);
 
         }
         
@@ -68,6 +74,8 @@ class CardsController extends Controller
             if(!($role == "seller")){
 
                 $this->msg = 'Acceso denegado para clientes, unico para vendedores';
+                Log::info('Acceso denegado para clientes');
+                Log::debug($user);
 
             }else {
 
@@ -86,10 +94,14 @@ class CardsController extends Controller
                     $cards->save();
 
                     $this->msg = 'Carta registrada';
+                    Log::info('Carta registrada, 201 Created');
+                    Log::debug($cards);
 
                 }else{
 
                     $this->msg = 'No existe esa coleccion';
+                    Log::info('404 No existe dicha coleccion');
+                    Log::debug($data->id_collection);
 
                 }
             }
@@ -97,6 +109,8 @@ class CardsController extends Controller
         } else {
 
             $this->msg = 'Datos incorrectos';
+            Log::info('500 Datos incorrectos');
+            Log::debug($cards);
 
         }
 

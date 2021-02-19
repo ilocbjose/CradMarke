@@ -25,14 +25,14 @@ Route::post('login', 'App\Http\Controllers\UserController@authenticate');
 Route::post('password/email', 'App\Http\Controllers\UserController@forgot');
 Route::post('password/reset', 'App\Http\Controllers\UserController@reset');
 
+Route::get('indexCollection','App\Http\Controllers\CardsController@indexCollection');
+Route::get('indexSells','App\Http\Controllers\CardsController@indexSells');
+Route::get('indexCards','App\Http\Controllers\CardsController@index');
+
+Route::get('searchCards/{id}','App\Http\Controllers\CardsController@search');
+
 Route::group(['middleware' => ['jwt.verify']], function() {
-
-	Route::get('searchCards/{id}','App\Http\Controllers\CardsController@search');
 	
-	Route::get('indexCollection','App\Http\Controllers\CardsController@indexCollection');
-	Route::get('indexSells','App\Http\Controllers\CardsController@indexSells');
-	Route::get('indexCards','App\Http\Controllers\CardsController@index');
-
     Route::post('user','App\Http\Controllers\UserController@getAuthenticatedUser');
     Route::get('logout','App\Http\Controllers\UserController@logout');
 
