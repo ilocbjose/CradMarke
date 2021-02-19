@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cards;
+use App\Models\Card;
+use JWTAuth;
+use App\Models\User;
 use App\Models\Collection;
 use App\Models\Sell;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CardsController extends Controller
 {
@@ -19,23 +22,83 @@ class CardsController extends Controller
 
     }
 
+    public function search($id){
+
+        $respuesta = null;
+
+        if($id){
+
+            $card = Card::where('name',$id)->get()->toArray();
+
+            if($card){
+
+                $this->respuesta = $card;
+
+            }else{
+
+                $this->respuesta = "No existe ninguna carta asociado a los datos proporcionados";
+
+            }
+
+        } else {
+
+            $this->respuesta = "Datos introducidos no validos";
+            Log::info('Datos introducidos erroneos (Busqueda por nombre)');
+
+        }
+        
+        return $this->respuesta;
+
+    }
+
     public function store(Request $request){
 
-        $msg = null;
+        $response = "";
 
-            $cards = new Cards;
+        $data = $request->getContent();
 
-            $cards->name = $request->name;
+        $data = json_decode($data);
 
-            $cards->description = $request->description;
+        if($data){
 
-            $cards->id_collection = $request->id_collection;
+            $user = JWTAuth::parseToken()->authenticate();
 
-            $cards->save();
+            $role = $user->role;
 
-            $this->msg = 'Carta registrada';
+            if(!($role == "seller")){
 
+                $this->msg = 'Acceso denegado para clientes, unico para vendedores';
 
+            }else {
+
+                $msg = null;
+
+                $cards = new Card;
+
+                $collections = Collection::where('id',$data->id_collection)->first();
+
+                if($collections){
+
+                    $cards->name = $data->name;
+                    $cards->description = $data->description;
+                    $cards->id_collection = $data->id_collection;
+
+                    $cards->save();
+
+                    $this->msg = 'Carta registrada';
+
+                }else{
+
+                    $this->msg = 'No existe esa coleccion';
+
+                }
+            }
+
+        } else {
+
+            $this->msg = 'Datos incorrectos';
+
+        }
 
         return $this->msg;
     }
@@ -49,20 +112,56 @@ class CardsController extends Controller
 
     public function storeCollection(Request $request){
 
-        $msg = null;
+        $msg = "";
 
-        $collection = new Collection;
+        $data = $request->getContent();
 
-        $collection->name = $request->name;
+        $data = json_decode($data);
 
-        $collection->photo = $request->photo;
+        $user = JWTAuth::parseToken()->authenticate();
 
-        $collection->date = $request->date;
+        $role = $user->role;
 
-        $collection->save();
+        if($data){
+
+            if(!($role == "seller")){
+
+                $this->msg = "Acceso denegado para clientes, unico para vendedores";
+
+            }else{
+                $collection = new Collection;
+
+                $collection->name = $data->name;
+
+                if($data->date && strtotime($data->date) != NULL){
+                    $collection->date = $data->date;
+                }else{
+                    $this->msg = " Incorrect Date Format | ";
+                }
+
+                if(strpos($data->file_path,'http') === 0){
+
+                    $collection->file_path = $data->file_path;
+
+                    $collection->save();
+
+                    $this->msg = "Collection created!";
 
 
-        $this->msg = 'Colección guardada';
+                } else {
+
+                    $this->msg = "Photo have to be an URL";
+
+                }  
+            }
+
+            
+
+        } else {
+
+            $this->msg = "Datos incorrectos!";
+
+        }
         
         return $this->msg;
     }
@@ -76,20 +175,58 @@ class CardsController extends Controller
 
     public function storeSells(Request $request){
 
-        $msg = null;
+        $msg = "";
 
-        $sells = new Sell;
+        $data = $request->getContent();
 
-        $sells->id_card = $request->id_card;
+        $user = JWTAuth::parseToken()->authenticate();
 
-        $sells->amount = $request->amount;
+        $data = json_decode($data);
 
-        $sells->price = $request->price;
+        if($data){
 
-        $sells->save();
+            if($user->role == "seller"){
 
-        $this->msg = 'Venta guardada';
+                $sells = new Sell;
 
+                $id_user = $user->id;
+
+                if($id_user){
+
+                    $sells->amount = $data->amount;
+
+                    $sells->price = $data->price;
+
+                    $sells->id_user = $id_user;
+
+                    $card_id = Card::where('id',$data->id_card)->first();
+
+                    if($card_id){
+
+                        $sells->id_card = $data->id_card;
+
+                        $sells->save();
+
+                        $this->msg = 'Venta guardada!';
+
+                    } else  {
+
+                        $this->msg = 'No existe la carta que pretendes vender.';
+
+                    }
+
+                } else {
+
+                    $this->msg = 'El usuario no corresponde con un id.';
+
+                }
+
+            } else {
+
+                $this->msg = 'Venta exclusiva para vendedores';
+
+            }
+        }
         return $this->msg;
 
     }

@@ -9,7 +9,7 @@ class Collection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'photo', 'date'];
+    protected $fillable = ['name', 'file_path', 'date'];
 
     public function cards(){
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Password;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -83,5 +84,32 @@ class UserController extends Controller
     		'status'=> 'success',
     		'message'=>'logout'
     	],200);
+    }
+
+    public function forgot() {
+        $credentials = request()->validate(['email' => 'required|email']);
+
+        Password::sendResetLink($credentials);
+
+        return response()->json(["msg" => 'Reset password link sent on your email id.']);
+    }
+
+    public function reset() {
+        $credentials = request()->validate([
+            'email' => 'required|email',
+            'token' => 'required|string',
+            'password' => 'required|string|confirmed'
+        ]);
+
+        $reset_password_status = Password::reset($credentials, function ($user, $password) {
+            $user->password = Hash::make($password);
+            $user->save();
+        });
+
+        if ($reset_password_status == Password::INVALID_TOKEN) {
+            return response()->json(["msg" => "Invalid token provided"], 400);
+        }
+
+        return response()->json(["msg" => "Password has been successfully changed"]);
     }
 }

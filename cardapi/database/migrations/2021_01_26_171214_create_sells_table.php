@@ -17,6 +17,7 @@ class CreateSellsTable extends Migration
             $table->id();
             $table->string('id_card');
             $table->string('amount');
+            $table->string('id_user')->nullable();
             $table->string('price');
             $table->timestamps();
         });
