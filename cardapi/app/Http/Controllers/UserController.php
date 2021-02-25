@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Session\Store;
 use JWTAuth;
+use Symfony\Component\HttpFoundation\Cookie;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
@@ -26,6 +28,7 @@ class UserController extends Controller
         Log::info('No se ha podido crear el token');
     }
     Log::info('usuario creado');
+    $request->session()->put('payload', compact('token'));
     return response()->json(compact('token'));
     }
 
@@ -46,6 +49,7 @@ class UserController extends Controller
                 return response()->json(['token_absent'], $e->getStatusCode());
                 Log::info('No hay token');
         }
+
         return response()->json(compact('user'));
     }
 
@@ -72,7 +76,7 @@ class UserController extends Controller
 
 
         $token = JWTAuth::fromUser($user);
-
+        $request->session()->put('token', compact('token'));
         return response()->json(compact('user','token'),201);
     }
 

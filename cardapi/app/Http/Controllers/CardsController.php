@@ -8,19 +8,13 @@ use JWTAuth;
 use App\Models\User;
 use App\Models\Collection;
 use App\Models\Sell;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CardsController extends Controller
 {
     //cards controller funcionalidad
-
-    public function index(){
-
-    	$cards = DB::table('cards')->get();
-    	return $cards;
-
-    }
 
     public function search($id){
 
@@ -115,13 +109,6 @@ class CardsController extends Controller
         }
 
         return $this->msg;
-    }
-
-    public function indexCollection(){
-
-        $collections = DB::table('collections')->get();
-        return $collections;
-
     }
 
     public function storeCollection(Request $request){

@@ -27,7 +27,6 @@ Route::post('password/reset', 'App\Http\Controllers\UserController@reset');
 
 Route::get('indexCollection','App\Http\Controllers\CardsController@indexCollection');
 Route::get('indexSells','App\Http\Controllers\CardsController@indexSells');
-Route::get('indexCards','App\Http\Controllers\CardsController@index');
 
 Route::get('searchCards/{id}','App\Http\Controllers\CardsController@search');
 
