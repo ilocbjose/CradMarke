@@ -16,26 +16,26 @@ class CardsController extends Controller
 {
     //cards controller funcionalidad
 
-    public function search($id){
+    public function search(Request $request){
 
         $respuesta = null;
 
-        if($id){
+        if($request){
 
-            $card = Card::where('name',$id)->get()->toArray();
+            $card = Card::where('name',$request->id)->get();
 
             if($card){
 
-                $this->respuesta = $card;
+                return view('response.search_response')->with('cards',$card);
 
                 Log::info('Codigo 200, peticion aceptada');
-                Log::debug($id);
+                Log::debug($request->id);
 
             }else{
 
                 $this->respuesta = "No existe ninguna carta asociado a los datos proporcionados";
                 Log::info('No existe dicha carta');
-                Log::debug($id);
+                Log::debug($request->id);
 
             }
 
@@ -43,7 +43,7 @@ class CardsController extends Controller
 
             $this->respuesta = "Datos introducidos no validos";
             Log::info('Datos introducidos erroneos');
-            Log::debug($id);
+            Log::debug($request->id);
 
         }
         
@@ -55,58 +55,50 @@ class CardsController extends Controller
 
         $response = "";
 
-        $data = $request->getContent();
+        $user = $request->cookie('token');
 
-        $data = json_decode($data);
+        $user = JWTAuth::parseToken()->authenticate();
 
-        if($data){
+        $collection_find = $request->input('id_collection'); 
 
-            $user = JWTAuth::parseToken()->authenticate();
+        $role = $user->role;
 
-            $role = $user->role;
+        if(!($role == "seller")){
 
-            if(!($role == "seller")){
+            $this->msg = 'Acceso denegado para clientes, unico para vendedores';
+            Log::info('Acceso denegado para clientes');
+            Log::debug($user);
 
-                $this->msg = 'Acceso denegado para clientes, unico para vendedores';
-                Log::info('Acceso denegado para clientes');
-                Log::debug($user);
+        }else {
 
-            }else {
+            $msg = null;
 
-                $msg = null;
+            $cards = new Card;
 
-                $cards = new Card;
+            $collections = Collection::where('id',$collection_find)->first();
 
-                $collections = Collection::where('id',$data->id_collection)->first();
+            if($collections){
 
-                if($collections){
+                $cards->name = $request->input('name');
+                $cards->description = $request->input('description');
+                $cards->id_collection = $request->input('id_collection');
 
-                    $cards->name = $data->name;
-                    $cards->description = $data->description;
-                    $cards->id_collection = $data->id_collection;
+                $cards->save();
 
-                    $cards->save();
+                $this->msg = 'Carta registrada';
+                Log::info('Carta registrada, 201 Created');
+                Log::debug($cards);
 
-                    $this->msg = 'Carta registrada';
-                    Log::info('Carta registrada, 201 Created');
-                    Log::debug($cards);
+            }else{
 
-                }else{
+                $this->msg = 'No existe esa coleccion';
+                Log::info('404 No existe dicha coleccion');
+                Log::debug($request->input('description'));
 
-                    $this->msg = 'No existe esa coleccion';
-                    Log::info('404 No existe dicha coleccion');
-                    Log::debug($data->id_collection);
-
-                }
             }
-
-        } else {
-
-            $this->msg = 'Datos incorrectos';
-            Log::info('500 Datos incorrectos');
-            Log::debug($cards);
-
         }
+
+        
 
         return $this->msg;
     }
@@ -115,15 +107,13 @@ class CardsController extends Controller
 
         $msg = "";
 
-        $data = $request->getContent();
-
-        $data = json_decode($data);
+        $user = $request->cookie('token');
 
         $user = JWTAuth::parseToken()->authenticate();
 
         $role = $user->role;
 
-        if($data){
+        if($request){
 
             if(!($role == "seller")){
 
@@ -132,17 +122,13 @@ class CardsController extends Controller
             }else{
                 $collection = new Collection;
 
-                $collection->name = $data->name;
+                $collection->name = $request->name;
+                $collection->date = $request->date;
+            
 
-                if($data->date && strtotime($data->date) != NULL){
-                    $collection->date = $data->date;
-                }else{
-                    $this->msg = " Incorrect Date Format | ";
-                }
+                if(strpos($request->file_path,'http') === 0){
 
-                if(strpos($data->file_path,'http') === 0){
-
-                    $collection->file_path = $data->file_path;
+                    $collection->file_path = $request->file_path;
 
                     $collection->save();
 
@@ -155,8 +141,6 @@ class CardsController extends Controller
 
                 }  
             }
-
-            
 
         } else {
 
@@ -178,13 +162,11 @@ class CardsController extends Controller
 
         $msg = "";
 
-        $data = $request->getContent();
+        $user = $request->cookie('token');
 
         $user = JWTAuth::parseToken()->authenticate();
 
-        $data = json_decode($data);
-
-        if($data){
+        if($request){
 
             if($user->role == "seller"){
 
@@ -194,17 +176,17 @@ class CardsController extends Controller
 
                 if($id_user){
 
-                    $sells->amount = $data->amount;
+                    $sells->amount = $request->amount;
 
-                    $sells->price = $data->price;
+                    $sells->price = $request->price;
 
                     $sells->id_user = $id_user;
 
-                    $card_id = Card::where('id',$data->id_card)->first();
+                    $card_id = Card::where('id',$request->id_card)->first();
 
                     if($card_id){
 
-                        $sells->id_card = $data->id_card;
+                        $sells->id_card = $request->id_card;
 
                         $sells->save();
 

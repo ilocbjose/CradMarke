@@ -3,9 +3,9 @@
 <br><br>
 <div class="row purple darken-1">
         
-    <form method="POST" action="http://127.0.0.1:90/CradMarke/cardapi/public/api/cards" class="col s12">
+    <form method="POST" action="http://127.0.0.1:90/CradMarke/cardapi/public/api/collection" class="col s12">
       @CSRF
-        <h2>Create Card</h2>
+        <h2>Create Collection</h2>
       <div class="row">
         <div class="input-field col s12">
           <input  placeholder="Name"  name="name" type="text" class="validate">
@@ -14,14 +14,14 @@
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input placeholder="Description" name="description" type="text" class="validate">
-          <label for="description">Description</label>
+          <input placeholder="File Path" name="file_path" type="text" class="validate">
+          <label for="file_path">File path</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input  placeholder="ID collection"  name="id_collection" type="text" class="validate">
-          <label for="id_collection">ID collection</label>
+          <input  placeholder="Date"  name="date" type="text" class="validate">
+          <label for="date">Date</label>
         </div>
       </div>
     

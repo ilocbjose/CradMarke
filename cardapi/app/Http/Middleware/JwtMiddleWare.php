@@ -20,7 +20,7 @@ class JwtMiddleWare
     public function handle(Request $request, Closure $next)
     {
          try {
-            $value = $request->session()->pull('token', 'default');
+            $value = $request->cookie('token');
             $value = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){

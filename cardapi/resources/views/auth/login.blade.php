@@ -4,8 +4,7 @@
 <br>
 <br>
     <div class="row purple darken-1">
-        <br><br><br>
-    <form method="GET" action="http://127.0.0.1:90/CradMarke/cardapi/public/login" class="col s12">
+    <form method="POST" action="http://127.0.0.1:90/CradMarke/cardapi/public/api/login" class="col s12">
         @CSRF
         <h2>Login Screen</h2>
       <div class="row">

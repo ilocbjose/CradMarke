@@ -18,12 +18,13 @@
     <body class="cyan lighten-3">
         <nav class="purple darken-1">
             <div class="nav-wrapper">
-              <a href="http://127.0.0.1:90/CradMarke/cardapi/public/" class="brand-logo">Card Market</a>
+              <a href="http://127.0.0.1:90/CradMarke/cardapi/public/" class="brand-logo center">Card Market</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/search">Search</a></li>
                 <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/login">Login</a></li>
                 <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/createCard">Create Card</a></li>
-                <li><a href="collapsible.html">Create Sell</a></li>
-                <li><a href="collapsible.html">Create Collection</a></li>
+                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/createSell">Create Sell</a></li>
+                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/createCollection">Create Collection</a></li>
               </ul>
             </div>
           </nav>
@@ -31,10 +32,6 @@
             @yield('content')
         </div>
     </body>
-
-
-
-
 
     <style type="text/css"> 
         footer {
@@ -57,6 +54,15 @@
             <div class="container">
             © 2021 Copyright CardMarket
             <a class="grey-text text-lighten-4 right" href="https://github.com/ilocbjose/CradMarke.git">Github</a>
+                <div class="col s6">
+                    <form action="http://127.0.0.1:90/CradMarke/cardapi/public/api/user" method="POST">
+                        <center>
+                        <button class="btn waves-effect waves-light" name="send" value="Submit" type="submit">Profile
+                            <i class="material-icons right">account_circle</i>
+                        </button>
+                        </center>
+                    </form>
+                </div>
             </div>
           </div>
         </footer>

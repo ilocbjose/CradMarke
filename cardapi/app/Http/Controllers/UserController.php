@@ -17,6 +17,7 @@ class UserController extends Controller
 {
     public function authenticate(Request $request)
     {
+
     $credentials = $request->only('email', 'password');
     try {
         if (! $token = JWTAuth::attempt($credentials)) {
@@ -28,8 +29,7 @@ class UserController extends Controller
         Log::info('No se ha podido crear el token');
     }
     Log::info('usuario creado');
-    $request->session()->put('payload', compact('token'));
-    return response()->json(compact('token'));
+    return back()->withCookie('token',$token);
     }
 
     public function getAuthenticatedUser()
@@ -50,7 +50,9 @@ class UserController extends Controller
                 Log::info('No hay token');
         }
 
-        return response()->json(compact('user'));
+        $user_send = compact('user');
+
+        return view('response.user_response')->with('users',$user_send);
     }
 
 
@@ -76,13 +78,11 @@ class UserController extends Controller
 
 
         $token = JWTAuth::fromUser($user);
-        $request->session()->put('token', compact('token'));
-        return response()->json(compact('user','token'),201);
+        return response()->json(compact('user','token'),201)->withCookie('token',$token);
     }
 
     public function logout(Request $request){
-    	JWTAuth::invalidate($request->get('authorization'));
-        Log::info('logout');
+    	JWTAuth::invalidate($request->cookie('token'));
 
     	return response()->json([
     		'status'=> 'success',

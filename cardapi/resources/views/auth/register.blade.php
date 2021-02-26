@@ -12,7 +12,6 @@
     var instances = M.FormSelect.init(elems);
   });
 </script>
-
 <br>
 <br>
     <div class="row purple darken-1">

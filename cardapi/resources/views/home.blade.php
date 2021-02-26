@@ -5,7 +5,7 @@
     <div class="col s6 container">
         <div class="panel panel-default">
             <div class="card-panel purple darken-1">
-                <h3>Cartas</h3>
+                <a href="http://127.0.0.1:90/CradMarke/cardapi/public/indexCard"><h3>Cartas</h3></a>
             </div>
             @if ($cards->isEmpty())
                 <div>No hay cartas</div>
@@ -34,40 +34,7 @@
     <div class="col s6 container">
         <div class="panel panel-default">
             <div class="card-panel purple darken-1">
-                <h3>Colecciones</h3>
-            </div>
-            @if ($collections->isEmpty())
-                <div>No hay colecciones</div>
-            @else
-                <table class="responsive-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>File_path</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($collections as $collection)
-                        
-                            <tr>
-                                <td>{!! $collection->name !!}</td>
-                                <td>{!! $collection->file_path !!}</td>
-                                <td>{!! $collection->date !!}</td>
-                            </tr>
-
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
-        </div>
-    </div>
-</div>
-<div class="row">
-	<div class="col s12 container">
-        <div class="panel panel-default">
-            <div class="card-panel purple darken-1">
-                <h3>Ventas</h3>
+                <a href="http://127.0.0.1:90/CradMarke/cardapi/public/indexSell"><h3>Ventas</h3></a>
             </div>
             @if ($sells->isEmpty())
                 <div>No hay cartas disponibles a la venta</div>
@@ -89,6 +56,39 @@
                                 <td>{!! $sell->amount !!}</td>
                                 <td>{!! $sell->id_user !!}</td>
                                 <td>{!! $sell->price !!}</td>
+                            </tr>
+
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 container">
+        <div class="panel panel-default">
+            <div class="card-panel purple darken-1">
+                <a href="http://127.0.0.1:90/CradMarke/cardapi/public/indexCollection"><h3>Collections</h3></a>
+            </div>
+            @if ($collections->isEmpty())
+                <div>No hay colecciones</div>
+            @else
+                <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>File_path</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($collections as $collection)
+                        
+                            <tr>
+                                <td>{!! $collection->name !!}</td>
+                                <td>{!! $collection->file_path !!}</td>
+                                <td>{!! $collection->date !!}</td>
                             </tr>
 
                         @endforeach
