@@ -6,7 +6,8 @@
 
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- Compiled and minified CSS -->
+
+    <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
@@ -20,11 +21,11 @@
             <div class="nav-wrapper">
               <a href="http://127.0.0.1:90/CradMarke/cardapi/public/" class="brand-logo center">Card Market</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/search">Search</a></li>
-                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/login">Login</a></li>
-                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/createCard">Create Card</a></li>
-                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/createSell">Create Sell</a></li>
-                <li><a href="http://127.0.0.1:90/CradMarke/cardapi/public/createCollection">Create Collection</a></li>
+                <li><a href="search">Search</a></li>
+                <li><a href="login">Login</a></li>
+                <li><a href="createCard">Create Card</a></li>
+                <li><a href="createSell">Create Sell</a></li>
+                <li><a href="createCollection">Create Collection</a></li>
               </ul>
             </div>
           </nav>
@@ -34,11 +35,20 @@
     </body>
 
     <style type="text/css"> 
+        html {
+            min-height: 100%;
+            position: relative;
+            }
+        body {
+            margin: 0;
+            margin-bottom: 40px;
+            }
         footer {
+            background-color: black;
             position: absolute;
             bottom: 0;
             width: 100%;
-            }
+}
     </style>
 
     <footer class="page-footer purple darken-1">

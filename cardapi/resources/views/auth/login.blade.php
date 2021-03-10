@@ -41,10 +41,5 @@
             </center>
         </div>
     </div>
-        
-
-    
-    
-
   </div>
 @endsection
