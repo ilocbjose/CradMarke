@@ -19,7 +19,7 @@
     <body class="cyan lighten-3">
         <nav class="purple darken-1">
             <div class="nav-wrapper">
-              <a href="http://127.0.0.1:90/CradMarke/cardapi/public/" class="brand-logo center">Card Market</a>
+              <a href="../public" class="brand-logo center">Card Market</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="search">Search</a></li>
                 <li><a href="login">Login</a></li>
@@ -44,6 +44,7 @@
             margin-bottom: 40px;
             }
         footer {
+            margin-top: 40px;
             background-color: black;
             position: absolute;
             bottom: 0;
